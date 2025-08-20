@@ -4,29 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Part-Time Angel Test</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    .hidden { display: none; }
+    .option { display: block; margin: 10px 0; padding: 10px; background: #eee; border: none; cursor: pointer; }
+    .angel-card { border: 1px solid #ccc; padding: 12px; margin-bottom: 10px; }
+  </style>
 </head>
 <body>
-  <div class="container">
 
-    <!-- 퀴즈 박스 -->
-    <div id="quiz">
-      <h2 id="question-box"></h2>
-      <div id="options" class="options-box"></div>
-    </div>
-
-    <!-- 결과 박스 -->
-    <div id="result" class="hidden">
-      <h2>당신에게 가장 잘 어울리는 엔젤</h2>
-      <div id="best-match" class="best-match"></div>
-
-      <h3>그 외 추천 엔젤</h3>
-      <div id="other-matches" class="other-matches"></div>
-
-      <button onclick="restartQuiz()" class="restart-button">처음으로 돌아가기</button>
-    </div>
-
+  <!-- 퀴즈 영역 -->
+  <div id="quiz">
+    <h2 id="question-box"></h2>
+    <div id="options"></div>
   </div>
+
+  <!-- 결과 영역 -->
+  <div id="result" class="hidden">
+    <h2>당신과 가장 어울리는 엔젤</h2>
+    <div id="best-match"></div>
+    <h3>다른 추천 엔젤들</h3>
+    <div id="other-matches"></div>
+  </div>
+
+  <!-- 스크립트 연결 -->
   <script src="app.js"></script>
 </body>
 </html>
