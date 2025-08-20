@@ -1,23 +1,89 @@
+:root {
+  --primary: #111;
+  --accent: #e8f0fe;
+  --bg: #f9f9f9;
+  --white: #ffffff;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: sans-serif;
-  text-align: center;
-  background: #f2f2f2;
+  margin: 0;
+  font-family: "Apple SD Gothic Neo", sans-serif;
+  background-color: var(--bg);
+  color: var(--primary);
+  padding: 0;
 }
-section {
-  padding: 40px;
+
+header, section {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 20px;
 }
+
+h1, h2, h3, h4, p {
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
 .hidden {
   display: none;
 }
-.card {
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 20px auto;
-  padding: 20px;
-  max-width: 300px;
+
+.question {
+  font-size: 1.2rem;
+  margin: 20px 0;
 }
-.card img {
+
+.option {
+  display: block;
+  margin: 10px auto;
+  padding: 14px 20px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: var(--radius);
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s ease;
   width: 100%;
-  border-radius: 12px;
+  max-width: 500px;
+}
+
+.option:hover {
+  background-color: var(--accent);
+}
+
+.result {
+  background: var(--white);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  text-align: center;
+  margin-top: 20px;
+}
+
+.angel-card {
+  margin: 16px auto;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  max-width: 480px;
+  background: #fcfcfc;
+}
+
+button.option:focus {
+  outline: 3px solid var(--accent);
+}
+
+@media (max-width: 480px) {
+  .option {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+  header, section {
+    padding: 20px 14px;
+  }
 }
