@@ -1,0 +1,23 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f2f2f2;
+}
+section {
+  padding: 40px;
+}
+.hidden {
+  display: none;
+}
+.card {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 300px;
+}
+.card img {
+  width: 100%;
+  border-radius: 12px;
+}
