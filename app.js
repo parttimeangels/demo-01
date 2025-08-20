@@ -3,7 +3,7 @@ console.log("[app.js] 로드 OK");
 
 // ===== 설정 =====
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbw9flu7oc49WOywz-FlUc1JfzWsdopiMgOH_kRsdLWwtgEPtsnwVj_mvYIq1yPgXFSdAQ/exec";
+  "https://script.google.com/macros/s/AKfycbypCCeRa-i4vIRBioEIxqKziSPghABPVxLl8oLc1qoIC0xdTiN6jQUHz-r77_NPXlcU4Q/exec";
 const ANGELS_SRC = "angels.json";
 
 // ===== 데이터 =====
