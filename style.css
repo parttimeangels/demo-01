@@ -51,9 +51,27 @@ h1{ font-size:1.6rem; font-weight:700; }
 }
 .angel-card img{ width:100%; height:auto; max-width:320px; border-radius:12px; margin-top:12px; }
 
-/* 다른 추천: 항상 2칸(모바일 포함) */
-#other-matches{ display:flex; gap:12px; justify-content:center; align-items:stretch; flex-wrap:wrap; }
-#other-matches .angel-card{ flex:1 1 50%; max-width:50%; box-sizing:border-box; }
+/* 다른 추천 엔젤: 항상 2칸, 한 줄 고정 */
+#other-matches{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2칸 강제 */
+  gap: 12px;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+/* 카드가 한 줄을 넘지 않도록 여백/폭 정리 */
+#other-matches .angel-card{
+  margin: 0;                 /* 바깥 여백 제거: 줄바꿈 방지 */
+  width: 100%;               /* 칸 꽉 채우기 */
+  box-sizing: border-box;    /* padding 포함 계산 */
+}
+
+/* 혹시 남아있으면 제거해야 하는 예시(있다면 주석/삭제해주세요)
+@media (max-width: 560px){
+  #other-matches .angel-card{ flex: 1 1 100%; max-width:100%; }  <-- 이 규칙이 있으면 1칸으로 떨어집니다.
+}
+*/
 
 /* 유틸 */
 .center{ text-align:center; }
