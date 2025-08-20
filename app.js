@@ -24,56 +24,56 @@ const questions = [
 let currentQuestionIndex = 0;
 const userAnswers = new Array(questions.length).fill(null);
 
+document.getElementById("start-btn").onclick = () => {
+  document.getElementById("start-screen").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  showQuestion();
+};
+
+document.getElementById("prev-btn").onclick = () => {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    showQuestion();
+  }
+};
+
+document.getElementById("next-btn").onclick = () => {
+  if (userAnswers[currentQuestionIndex] !== null) {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      showQuestion();
+    } else {
+      showResult();
+    }
+  } else {
+    alert("옵션을 선택해주세요.");
+  }
+};
+
 function showQuestion() {
+  const q = questions[currentQuestionIndex];
   const questionBox = document.getElementById("question-box");
   const optionsBox = document.getElementById("options");
+
+  questionBox.innerText = q.question;
   optionsBox.innerHTML = "";
 
-  if (currentQuestionIndex >= questions.length) {
-    showResult();
-    return;
-  }
-
-  const current = questions[currentQuestionIndex];
-  questionBox.innerText = current.question;
-
-  current.options.forEach((optionText, idx) => {
+  q.options.forEach((optionText, idx) => {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.innerText = optionText;
-
-    if (userAnswers[currentQuestionIndex] === idx) {
-      btn.classList.add("selected");
-    }
+    if (userAnswers[currentQuestionIndex] === idx) btn.classList.add("selected");
 
     btn.onclick = () => {
       userAnswers[currentQuestionIndex] = idx;
-      currentQuestionIndex++;
       showQuestion();
     };
     optionsBox.appendChild(btn);
   });
 
-  const navContainer = document.createElement("div");
-  navContainer.className = "nav-container";
-
-  const prevBtn = document.createElement("button");
-  prevBtn.innerText = "이전";
-  prevBtn.className = "nav-button";
-  prevBtn.onclick = () => {
-    if (currentQuestionIndex > 0) {
-      currentQuestionIndex--;
-      showQuestion();
-    } else {
-      // 첫 질문이면 시작화면으로
-      document.getElementById("quiz").classList.add("hidden");
-      document.getElementById("start").classList.remove("hidden");
-    }
-  };
-
-  navContainer.appendChild(prevBtn);
-  optionsBox.appendChild(document.createElement("hr"));
-  optionsBox.appendChild(navContainer);
+  document.getElementById("prev-btn").disabled = currentQuestionIndex === 0;
+  document.getElementById("next-btn").innerText =
+    currentQuestionIndex === questions.length - 1 ? "결과보기" : "다음";
 }
 
 async function showResult() {
@@ -87,18 +87,12 @@ async function showResult() {
     const score = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
     const bestIndex = score % angels.length;
     const bestAngel = angels[bestIndex];
-
-    // 나머지 추천엔젤 (중복 없이)
-    const others = angels
-      .map((a, i) => ({ ...a, originalIndex: i }))
-      .filter(a => a.originalIndex !== bestIndex)
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 2);
+    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
 
     const bestDiv = document.getElementById("best-match");
     bestDiv.innerHTML = `
-      <div class="angel-card highlight">
-        <img src="${bestAngel.image}" alt="${bestAngel.name}" />
+      <div class="angel-card">
+        <img src="${bestAngel.image}" alt="${bestAngel.name}">
         <h3>${bestAngel.name}</h3>
         <p>${bestAngel.description}</p>
       </div>
@@ -110,37 +104,22 @@ async function showResult() {
       const div = document.createElement("div");
       div.className = "angel-card";
       div.innerHTML = `
-        <img src="${a.image}" alt="${a.name}" />
+        <img src="${a.image}" alt="${a.name}">
         <h4>${a.name}</h4>
         <p>${a.description}</p>
       `;
       otherDiv.appendChild(div);
     });
 
-  } catch (error) {
-    console.error("결과 오류:", error);
+  } catch (err) {
     document.getElementById("best-match").innerText = "결과를 불러오는 데 문제가 발생했습니다.";
+    console.error(err);
   }
-}
-
-function startQuiz() {
-  currentQuestionIndex = 0;
-  userAnswers.fill(null);
-  document.getElementById("start").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-  document.getElementById("result").classList.add("hidden");
-  showQuestion();
 }
 
 function restartQuiz() {
   currentQuestionIndex = 0;
   userAnswers.fill(null);
   document.getElementById("result").classList.add("hidden");
-  document.getElementById("start").classList.remove("hidden");
+  document.getElementById("start-screen").classList.remove("hidden");
 }
-
-window.onload = function () {
-  document.getElementById("start").classList.remove("hidden");
-  document.getElementById("quiz").classList.add("hidden");
-  document.getElementById("result").classList.add("hidden");
-};
