@@ -1,4 +1,9 @@
 // ==========================
+// 부트 로그
+// ==========================
+console.log('[app.js] 로드 OK');
+
+// ==========================
 // 설정
 // ==========================
 const WEB_APP_URL =
@@ -17,14 +22,14 @@ const questions = [
 ];
 
 // ==========================
-// 상태
+// 상태 & 헬퍼
 // ==========================
 let currentQuestionIndex = 0;
 const userAnswers = new Array(questions.length).fill(undefined);
 const $ = (id) => document.getElementById(id);
 
 // ==========================
-// 질문 표시
+// 질문 렌더
 // ==========================
 function showQuestion() {
   if (currentQuestionIndex >= questions.length) {
@@ -46,6 +51,7 @@ function showQuestion() {
     btn.className = "option";
     btn.textContent = label;
 
+    // 기존 선택 표시
     if (userAnswers[currentQuestionIndex] === idx) {
       btn.classList.add("selected");
       nextBtn.disabled = false;
@@ -78,101 +84,4 @@ function bindNav() {
 
   $("nextBtn").onclick = () => {
     if (userAnswers[currentQuestionIndex] === undefined) return;
-    if (currentQuestionIndex < questions.length - 1) {
-      currentQuestionIndex++;
-      showQuestion();
-    } else {
-      showResult();
-    }
-  };
-}
-
-// ==========================
-// 결과 표시
-// ==========================
-async function showResult() {
-  $("quiz").classList.add("hidden");
-  $("result").classList.remove("hidden");
-
-  try {
-    // 1) angels.json 로드
-    const res = await fetch(ANGELS_SRC);
-    const angels = await res.json();
-
-    // 간단 매칭 로직
-    const total = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
-    const bestIndex = angels.length ? total % angels.length : 0;
-    const best = angels[bestIndex] || {};
-    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
-
-    // 베스트 엔젤 출력
-    $("best-match").innerHTML = `
-      <div class="angel-card">
-        <h3>${best.name ?? "Angel"}</h3>
-        <p>${best.description ?? ""}</p>
-        ${best.image ? `<img src="${best.image}" alt="${best.name}" />` : ""}
-      </div>
-    `;
-
-    // 다른 엔젤 출력
-    const otherWrap = $("other-matches");
-    otherWrap.innerHTML = "";
-    others.forEach((a) => {
-      const div = document.createElement("div");
-      div.className = "angel-card";
-      div.innerHTML = `
-        <h4>${a.name ?? "Angel"}</h4>
-        <p>${a.description ?? ""}</p>
-        ${a.image ? `<img src="${a.image}" alt="${a.name}" />` : ""}
-      `;
-      otherWrap.appendChild(div);
-    });
-
-    // 2) Google Apps Script로 저장
-    await saveToSheet({
-      answers: userAnswers,
-      bestMatch: best?.name ?? null,
-      timestamp: new Date().toISOString(),
-    });
-
-  } catch (err) {
-    console.error("결과 처리 오류:", err);
-    $("best-match").textContent = "결과를 불러오는 데 문제가 발생했습니다.";
-  }
-}
-
-// ==========================
-// Google Sheet 저장
-// ==========================
-async function saveToSheet(payload) {
-  try {
-    await fetch(WEB_APP_URL, {
-      method: "POST",
-      headers: {
-        // 중요: 프리플라이트 회피용
-        "Content-Type": "text/plain;charset=utf-8",
-      },
-      body: JSON.stringify(payload),
-    });
-  } catch (e) {
-    console.warn("saveToSheet failed:", e);
-  }
-}
-
-// ==========================
-// 초기화
-// ==========================
-window.addEventListener("DOMContentLoaded", () => {
-  bindNav();
-  // 처음부터 다시하기 버튼 이벤트
-  const restartBtn = document.getElementById("restartBtn");
-  if (restartBtn) {
-    restartBtn.onclick = () => {
-      currentQuestionIndex = 0;
-      userAnswers.fill(undefined);
-
-      $("result").classList.add("hidden");
-      $("quiz").classList.remove("hidden");
-
-  showQuestion();
-});
+    if (currentQuestionIndex < questions.length
