@@ -30,10 +30,10 @@ const questions = [
 ];
 
 const angels = [
-  { name: "Angel J", tags: ["grieving", "empathetic", "nostalgic"], desc: "상실과 그리움에 깊이 공감하는 엔젤입니다." },
-  { name: "Angel L", tags: ["anxious", "presence", "healing"], desc: "불안을 다정히 감싸주는 치유형 엔젤입니다." },
-  { name: "Angel H", tags: ["angry", "directive", "expressive"], desc: "분노와 혼란 속에서도 방향을 제시하는 강단 있는 엔젤입니다." },
-  { name: "Angel Y", tags: ["depressed", "listener", "isolated"], desc: "고요한 공간에서 조용히 함께해주는 위로형 엔젤입니다." }
+  { name: "Angel J", photo: "angel1.jpg", tags: ["grieving", "empathetic", "nostalgic"], desc: "상실과 그리움에 깊이 공감하는 엔젤입니다." },
+  { name: "Angel L", photo: "angel2.jpg", tags: ["anxious", "presence", "healing"], desc: "불안을 다정히 감싸주는 치유형 엔젤입니다." },
+  { name: "Angel H", photo: "angel3.jpg", tags: ["angry", "directive", "expressive"], desc: "분노와 혼란 속에서도 방향을 제시하는 강단 있는 엔젤입니다." },
+  { name: "Angel Y", photo: "angel4.jpg", tags: ["depressed", "listener", "isolated"], desc: "고요한 공간에서 조용히 함께해주는 위로형 엔젤입니다." }
 ];
 
 let current = 0;
@@ -74,30 +74,33 @@ function showResult() {
 
   const top = scores[0];
   selectedAngelName = top.name;
-  bestMatch.innerHTML = `<img src="${imgSrc}" alt="${top.name}" style="width:100%; max-width:320px; border-radius:12px; margin-bottom:16px;">
-  <h3>${top.name}</h3>
-  <p>${top.desc}</p>;
+  const imgSrc = `assets/${top.photo || 'angel1.jpg'}`;
+
+  bestMatch.innerHTML = `
+    <img src="${imgSrc}" alt="${top.name}" style="width:100%; max-width:320px; border-radius:12px; margin-bottom:16px;">
+    <h3>${top.name}</h3>
+    <p>${top.desc}</p>
+  `;
 
   scores.slice(1, 3).forEach(a => {
-  const img = `assets/${a.photo || 'angel1.jpg'}`;
-  const div = document.createElement("div");
-  div.className = "angel-card";
-  div.innerHTML = `
-    <img src="${img}" alt="${a.name}" style="width:100%; max-width:200px; border-radius:10px; margin-bottom:12px;">
-    <h4>${a.name}</h4>
-    <p>매칭률 ${a.score}/3</p>
-    <p>${a.desc}</p>
-  `;
-  otherMatches.appendChild(div);
-});
+    const img = `assets/${a.photo || 'angel1.jpg'}`;
+    const div = document.createElement("div");
+    div.className = "angel-card";
+    div.innerHTML = `
+      <img src="${img}" alt="${a.name}" style="width:100%; max-width:200px; border-radius:10px; margin-bottom:12px;">
+      <h4>${a.name}</h4>
+      <p>매칭률 ${a.score}/3</p>
+      <p>${a.desc}</p>
+    `;
+    otherMatches.appendChild(div);
+  });
 
   sendToSheet(top);
 }
 
-// ✅ 결과 Google 시트로 전송
 function sendToSheet(result) {
   const submitData = {
-    nickname: "관객",  // 나중에 입력란 추가 가능
+    nickname: "관객",
     q1: userTags[0],
     q2: userTags[1],
     q3: userTags[2],
@@ -111,11 +114,3 @@ function sendToSheet(result) {
     method: "POST",
     body: JSON.stringify(submitData),
     headers: { "Content-Type": "application/json" }
-  }).then(() => {
-    console.log("✅ 응답 결과가 Google 시트에 저장되었습니다.");
-  }).catch(() => {
-    console.error("❌ 저장 실패: Google Apps Script 응답 오류");
-  });
-}
-
-showQuestion();
