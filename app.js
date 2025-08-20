@@ -1,120 +1,112 @@
-let currentQuestion = 0;
-let answers = [];
-
-let questions = [
+const questions = [
   {
-    question: "지금 가장 필요한 감정은 무엇인가요?",
-    options: ["위로", "조언", "침묵", "응원"]
+    question: "혼자 있는 시간이 많을 때 당신은?",
+    options: ["외로워진다", "편안하다", "불안하다", "무감각해진다"]
   },
   {
-    question: "당신이 선호하는 소통 방식은?",
-    options: ["다정한 말투", "논리적인 설명", "묵묵한 경청", "유쾌한 농담"]
+    question: "사람과 갈등이 생겼을 때 당신의 반응은?",
+    options: ["화를 내고 후회한다", "상대 탓을 한다", "내 탓을 한다", "아무렇지 않은 척 한다"]
   },
   {
-    question: "당신은 어떤 상황에서 힘을 얻나요?",
-    options: ["감정을 공감받을 때", "현실적인 해결책을 들을 때", "조용히 함께 있어줄 때", "웃으며 넘길 수 있을 때"]
+    question: "당신이 가장 두려워하는 감정은?",
+    options: ["슬픔", "분노", "죄책감", "무기력"]
   },
   {
-    question: "당신이 원하는 관계의 거리는?",
-    options: ["가까운 친구처럼", "멘토처럼", "그림자처럼", "가볍게 스쳐가는 인연"]
+    question: "당신의 하루가 무의미하다고 느껴질 때",
+    options: ["억지로라도 할 일을 만든다", "아무것도 하지 않는다", "누군가를 만나 위로받고 싶다", "그냥 그런 날도 있지 하며 넘긴다"]
   },
   {
-    question: "지금 당신의 상태에 가장 가까운 것은?",
-    options: ["마음이 무겁고 외롭다", "혼란스럽고 복잡하다", "말로 설명할 수 없다", "그냥 누군가 있으면 좋겠다"]
+    question: "지금 당신에게 가장 필요한 것은?",
+    options: ["다정한 말", "현실적인 조언", "함께 있어줄 사람", "아무 말 없이 들어주는 사람"]
   }
 ];
 
-let angelsData = [];
-let selectedAngels = [];
+let currentIndex = 0;
+let userAnswers = [];
 
-// 엔젤 JSON 로드
-async function loadAngels() {
-  const response = await fetch("angels.json");
-  angelsData = await response.json();
+const questionText = document.getElementById("question-text");
+const answerButtons = document.getElementById("answer-buttons");
+const nextBtn = document.getElementById("next-btn");
+const quizSection = document.getElementById("quiz");
+const resultSection = document.getElementById("result");
+const restartBtn = document.getElementById("restart-btn");
+
+const mainAngelName = document.getElementById("main-angel-name");
+const mainAngelDesc = document.getElementById("main-angel-description");
+const mainAngelImage = document.getElementById("main-angel-image");
+const otherAngelsContainer = document.getElementById("other-angels");
+
+function startQuiz() {
+  currentIndex = 0;
+  userAnswers = [];
+  quizSection.classList.remove("hidden");
+  resultSection.classList.add("hidden");
+  showQuestion();
 }
 
-// 첫 질문 렌더링
 function showQuestion() {
-  const quizDiv = document.getElementById("quiz");
-  quizDiv.innerHTML = "";
+  const current = questions[currentIndex];
+  questionText.innerText = current.question;
+  answerButtons.innerHTML = "";
 
-  const q = questions[currentQuestion];
-
-  const questionEl = document.createElement("h2");
-  questionEl.textContent = q.question;
-  quizDiv.appendChild(questionEl);
-
-  q.options.forEach(option => {
-    const button = document.createElement("button");
-    button.textContent = option;
-    button.classList.add("option-button");
-    button.addEventListener("click", () => {
-      answers.push(option);
-      currentQuestion++;
-      if (currentQuestion < questions.length) {
+  current.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.classList.add("option-btn");
+    btn.onclick = () => {
+      userAnswers.push(i);
+      currentIndex++;
+      if (currentIndex < questions.length) {
         showQuestion();
       } else {
-        matchAngels();
         showResult();
       }
-    });
-    quizDiv.appendChild(button);
+    };
+    answerButtons.appendChild(btn);
   });
 }
 
-// 엔젤 매칭 로직 (랜덤 3명 추천)
-function matchAngels() {
-  const shuffled = angelsData.sort(() => 0.5 - Math.random());
-  selectedAngels = shuffled.slice(0, 3);
-}
+async function showResult() {
+  quizSection.classList.add("hidden");
+  resultSection.classList.remove("hidden");
 
-// 결과 화면 표시
-function showResult() {
-  document.getElementById("quiz").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
+  try {
+    const res = await fetch("angels.json");
+    const angels = await res.json();
 
-  const mainAngel = selectedAngels[0];
-  const otherAngels = selectedAngels.slice(1);
+    const score = userAnswers.reduce((a, b) => a + b, 0);
+    const bestIndex = score % angels.length;
+    const bestAngel = angels[bestIndex];
 
-  document.getElementById("main-angel-name").textContent = mainAngel.name;
-  document.getElementById("main-angel-description").textContent = mainAngel.description;
-  document.getElementById("main-angel-image").src = mainAngel.image;
-  document.getElementById("main-angel-image").alt = mainAngel.name;
+    // 메인 엔젤 표시
+    mainAngelName.innerText = bestAngel.name;
+    mainAngelDesc.innerText = bestAngel.description;
+    mainAngelImage.src = bestAngel.image;
 
-  const othersContainer = document.getElementById("other-angels");
-  othersContainer.innerHTML = "";
+    // 보조 엔젤 추천 (최대 2명)
+    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
+    otherAngelsContainer.innerHTML = "";
 
-  otherAngels.forEach(angel => {
-    const div = document.createElement("div");
-    div.className = "other-angel-card";
-    div.innerHTML = `
-      <img src="${angel.image}" alt="${angel.name}" class="other-angel-image" />
-      <div>
+    others.forEach(angel => {
+      const card = document.createElement("div");
+      card.className = "other-angel-card";
+      card.innerHTML = `
+        <img src="${angel.image}" alt="${angel.name}" class="other-angel-image" />
         <h4>${angel.name}</h4>
         <p>${angel.description}</p>
-      </div>
-    `;
-    othersContainer.appendChild(div);
-  });
-}
+      `;
+      otherAngelsContainer.appendChild(card);
+    });
 
-// 다시 시작
-function restartQuiz() {
-  currentQuestion = 0;
-  answers = [];
-  selectedAngels = [];
-  document.getElementById("result").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-  showQuestion();
-}
-
-// 페이지 로드 시 초기화
-window.onload = async function () {
-  await loadAngels();
-  showQuestion();
-
-  const restartBtn = document.getElementById("restart-btn");
-  if (restartBtn) {
-    restartBtn.addEventListener("click", restartQuiz);
+  } catch (err) {
+    console.error("결과 불러오기 오류:", err);
+    mainAngelName.innerText = "문제가 발생했습니다.";
+    mainAngelDesc.innerText = "결과 데이터를 불러올 수 없습니다.";
   }
-};
+}
+
+// 버튼 핸들링
+restartBtn.onclick = startQuiz;
+
+// 시작
+window.onload = startQuiz;
