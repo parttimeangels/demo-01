@@ -20,6 +20,19 @@ body {
   box-sizing: border-box;
 }
 
+.nav-button {
+  padding: 8px 16px;
+  margin: 12px 6px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .hidden {
   display: none;
 }
