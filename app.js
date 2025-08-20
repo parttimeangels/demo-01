@@ -24,6 +24,30 @@ const questions = [
 let currentQuestionIndex = 0;
 const userAnswers = [];
 
+function navigateTo(page) {
+  if (page === "quiz") {
+    document.getElementById("quiz").classList.remove("hidden");
+    document.getElementById("result").classList.add("hidden");
+    history.pushState({ page: "quiz" }, "", "#quiz");
+  } else if (page === "result") {
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+    history.pushState({ page: "result" }, "", "#result");
+  }
+}
+
+// 브라우저 뒤로/앞으로 가기 버튼 이벤트 대응
+window.onpopstate = function (event) {
+  const page = event.state?.page || "quiz";
+  if (page === "quiz") {
+    document.getElementById("quiz").classList.remove("hidden");
+    document.getElementById("result").classList.add("hidden");
+  } else {
+    document.getElementById("quiz").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+  }
+};
+
 function showQuestion() {
   if (currentQuestionIndex >= questions.length) {
     showResult();
@@ -51,11 +75,10 @@ function showQuestion() {
 }
 
 async function showResult() {
-  document.getElementById("quiz").classList.add("hidden");
-  document.getElementById("result").classList.remove("hidden");
+  navigateTo("result");
 
   try {
-    const response = await fetch("angels.json");
+    const response = await fetch("https://script.google.com/macros/s/AKfycbw8D5Wt6ZPu6k0zPCCKUwdtuPo34vX7qfuzqJz6UpNZoZyWj4Dp0Fh2_ezctjOrsqZyEg/exec");
     const angels = await response.json();
 
     const score = userAnswers.reduce((a, b) => a + b, 0);
@@ -90,4 +113,8 @@ async function showResult() {
   }
 }
 
-window.onload = showQuestion;
+// 페이지 초기화
+window.onload = function () {
+  showQuestion();
+  history.replaceState({ page: "quiz" }, "", "#quiz");
+};
