@@ -1,13 +1,13 @@
 // ==========================
 // 부트 로그
 // ==========================
-console.log('[app.js] 로드 OK (2025-08-21)');
+console.log('[app.js] 로드 OK');
 
 // ==========================
 // 설정
 // ==========================
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbw9flu7oc49WOywz-FlUc1JfzWsdopiMgOH_kRsdLWwtgEPtsnwVj_mvYIq1yPgXFSdAQ/exec";
+  "https://script.google.com/macros/s/AKfycbypCCeRa-i4vIRBioEIxqKziSPghABPVxLl8oLc1qoIC0xdTiN6jQUHz-r77_NPXlcU4Q/exec";
 const ANGELS_SRC = "angels.json";
 
 // ==========================
@@ -84,4 +84,108 @@ function bindNav() {
 
   $("nextBtn").onclick = () => {
     if (userAnswers[currentQuestionIndex] === undefined) return;
-    if (currentQuestionIndex < questions.length
+    if (currentQuestionIndex < questions.length - 1) {
+      currentQuestionIndex++;
+      showQuestion();
+    } else {
+      showResult();
+    }
+  };
+}
+
+// ==========================
+// 결과 표시
+// ==========================
+async function showResult() {
+  $("quiz").classList.add("hidden");
+  $("result").classList.remove("hidden");
+
+  try {
+    // 1) angels.json 로드
+    const res = await fetch(ANGELS_SRC);
+    const angels = await res.json();
+
+    // 간단 매칭 로직
+    const total = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
+    const bestIndex = angels.length ? total % angels.length : 0;
+    const best = angels[bestIndex] || {};
+    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
+
+    // 베스트 엔젤 출력
+    $("best-match").innerHTML = `
+      <div class="angel-card">
+        <h3>${best.name ?? "Angel"}</h3>
+        <p>${best.description ?? ""}</p>
+        ${best.image ? `<img src="${best.image}" alt="${best.name}" />` : ""}
+      </div>
+    `;
+
+    // 다른 엔젤 출력 (이미지 포함)
+    const otherWrap = $("other-matches");
+    otherWrap.innerHTML = "";
+    others.forEach((a) => {
+      const div = document.createElement("div");
+      div.className = "angel-card";
+      div.innerHTML = `
+        <h4>${a.name ?? "Angel"}</h4>
+        <p>${a.description ?? ""}</p>
+        ${a.image ? `<img src="${a.image}" alt="${a.name}" />` : ""}
+      `;
+      otherWrap.appendChild(div);
+    });
+
+    // 2) Google Sheets 저장
+    await saveToSheet({
+      answers: userAnswers,
+      bestMatch: best?.name ?? null,
+      timestamp: new Date().toISOString(),
+    });
+
+  } catch (err) {
+    console.error("결과 처리 오류:", err);
+    $("best-match").textContent = "결과를 불러오는 데 문제가 발생했습니다.";
+  }
+}
+
+// ==========================
+// Google Sheet 저장
+// ==========================
+async function saveToSheet(payload) {
+  try {
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: {
+        // 프리플라이트 회피 (GAS는 OPTIONS 미지원)
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    console.warn("saveToSheet failed:", e);
+  }
+}
+
+// ==========================
+// 다시하기
+// ==========================
+function bindRestart() {
+  const btn = $("restartBtn");
+  if (!btn) return;
+  btn.onclick = () => {
+    currentQuestionIndex = 0;
+    userAnswers.fill(undefined);
+    $("result").classList.add("hidden");
+    $("quiz").classList.remove("hidden");
+    showQuestion();
+  };
+}
+
+// ==========================
+// 초기화
+// ==========================
+window.addEventListener("DOMContentLoaded", () => {
+  console.log('[app.js] DOMContentLoaded init');
+  bindNav();
+  bindRestart();
+  showQuestion();
+});
