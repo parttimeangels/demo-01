@@ -1,6 +1,6 @@
 [
-{ "name": "Angel 1", "description": "이해심 많고 따뜻한 조언자.", "image": "https://via.placeholder.com/150" },
-{ "name": "Angel 2", "description": "조용히 곁을 지켜주는 친구.", "image": "https://via.placeholder.com/150" },
-{ "name": "Angel 3", "description": "현실적인 방향을 제시하는 상담가.", "image": "https://via.placeholder.com/150" },
-{ "name": "Angel 4", "description": "함께 울어주는 동반자.", "image": "https://via.placeholder.com/150" }
+  { "name": "Angel 1", "description": "이해심 많고 따뜻한 조언자.", "image": "assets/angel1.jpg" },
+  { "name": "Angel 2", "description": "조용히 곁을 지켜주는 친구.", "image": "assets/angel2.jpg" },
+  { "name": "Angel 3", "description": "현실적인 방향을 제시하는 상담가.", "image": "assets/angel3.jpg" },
+  { "name": "Angel 4", "description": "함께 울어주는 동반자.", "image": "assets/angel4.jpg" }
 ]
