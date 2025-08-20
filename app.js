@@ -21,92 +21,103 @@ const questions = [
   }
 ];
 
-let currentIndex = 0;
-let userAnswers = [];
-
-const questionText = document.getElementById("question-text");
-const answerButtons = document.getElementById("answer-buttons");
-const nextBtn = document.getElementById("next-btn");
-const quizSection = document.getElementById("quiz");
-const resultSection = document.getElementById("result");
-const restartBtn = document.getElementById("restart-btn");
-
-const mainAngelName = document.getElementById("main-angel-name");
-const mainAngelDesc = document.getElementById("main-angel-description");
-const mainAngelImage = document.getElementById("main-angel-image");
-const otherAngelsContainer = document.getElementById("other-angels");
-
-function startQuiz() {
-  currentIndex = 0;
-  userAnswers = [];
-  quizSection.classList.remove("hidden");
-  resultSection.classList.add("hidden");
-  showQuestion();
-}
+let currentQuestionIndex = 0;
+const userAnswers = new Array(questions.length).fill(null);
 
 function showQuestion() {
-  const current = questions[currentIndex];
-  questionText.innerText = current.question;
-  answerButtons.innerHTML = "";
+  const questionBox = document.getElementById("question-box");
+  const optionsBox = document.getElementById("options");
+  optionsBox.innerHTML = "";
 
-  current.options.forEach((opt, i) => {
+  if (currentQuestionIndex >= questions.length) {
+    showResult();
+    return;
+  }
+
+  const current = questions[currentQuestionIndex];
+  questionBox.innerText = current.question;
+
+  current.options.forEach((optionText, idx) => {
     const btn = document.createElement("button");
-    btn.innerText = opt;
-    btn.classList.add("option-btn");
+    btn.className = "option";
+    btn.innerText = optionText;
+
+    if (userAnswers[currentQuestionIndex] === idx) {
+      btn.classList.add("selected");
+    }
+
     btn.onclick = () => {
-      userAnswers.push(i);
-      currentIndex++;
-      if (currentIndex < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
+      userAnswers[currentQuestionIndex] = idx;
+      currentQuestionIndex++;
+      showQuestion();
     };
-    answerButtons.appendChild(btn);
+    optionsBox.appendChild(btn);
   });
+
+  // 이전 버튼
+  const prevBtn = document.createElement("button");
+  prevBtn.innerText = "이전";
+  prevBtn.className = "nav-button";
+  prevBtn.disabled = currentQuestionIndex === 0;
+  prevBtn.onclick = () => {
+    if (currentQuestionIndex > 0) {
+      currentQuestionIndex--;
+      showQuestion();
+    }
+  };
+
+  optionsBox.appendChild(document.createElement("hr"));
+  optionsBox.appendChild(prevBtn);
 }
 
 async function showResult() {
-  quizSection.classList.add("hidden");
-  resultSection.classList.remove("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
 
   try {
-    const res = await fetch("angels.json");
-    const angels = await res.json();
+    const response = await fetch("angels.json");
+    const angels = await response.json();
 
-    const score = userAnswers.reduce((a, b) => a + b, 0);
+    const score = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
     const bestIndex = score % angels.length;
     const bestAngel = angels[bestIndex];
-
-    // 메인 엔젤 표시
-    mainAngelName.innerText = bestAngel.name;
-    mainAngelDesc.innerText = bestAngel.description;
-    mainAngelImage.src = bestAngel.image;
-
-    // 보조 엔젤 추천 (최대 2명)
     const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
-    otherAngelsContainer.innerHTML = "";
 
-    others.forEach(angel => {
-      const card = document.createElement("div");
-      card.className = "other-angel-card";
-      card.innerHTML = `
-        <img src="${angel.image}" alt="${angel.name}" class="other-angel-image" />
-        <h4>${angel.name}</h4>
-        <p>${angel.description}</p>
+    const bestDiv = document.getElementById("best-match");
+    bestDiv.innerHTML = `
+      <div class="angel-card">
+        <h3>${bestAngel.name}</h3>
+        <p>${bestAngel.description}</p>
+        <img src="${bestAngel.image}" alt="${bestAngel.name}" />
+      </div>
+    `;
+
+    const otherDiv = document.getElementById("other-matches");
+    otherDiv.innerHTML = "";
+    others.forEach(a => {
+      const div = document.createElement("div");
+      div.className = "angel-card";
+      div.innerHTML = `
+        <h4>${a.name}</h4>
+        <p>${a.description}</p>
+        <img src="${a.image}" alt="${a.name}" />
       `;
-      otherAngelsContainer.appendChild(card);
+      otherDiv.appendChild(div);
     });
 
-  } catch (err) {
-    console.error("결과 불러오기 오류:", err);
-    mainAngelName.innerText = "문제가 발생했습니다.";
-    mainAngelDesc.innerText = "결과 데이터를 불러올 수 없습니다.";
+  } catch (error) {
+    console.error("결과 오류:", error);
+    document.getElementById("best-match").innerText = "결과를 불러오는 데 문제가 발생했습니다.";
   }
 }
 
-// 버튼 핸들링
-restartBtn.onclick = startQuiz;
+function restartQuiz() {
+  currentQuestionIndex = 0;
+  userAnswers.fill(null);
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  showQuestion();
+}
 
 // 시작
-window.onload = startQuiz;
+window.onload = showQuestion;
