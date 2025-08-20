@@ -58,7 +58,8 @@ button {
 }
 
 .nav-buttons {
-  margin-top: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;   /* 중앙 정렬 */
+  gap: 20px;                  /* 버튼 사이 간격 */
+  margin-top: 30px;
 }
