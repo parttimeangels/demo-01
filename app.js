@@ -1,3 +1,5 @@
+// ✅ app.js (최종 완성본)
+
 const questions = [
   {
     question: "혼자 있는 시간이 많을 때 당신은?",
@@ -60,22 +62,20 @@ async function showResult() {
     const response = await fetch(WEB_APP_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "text/plain;charset=utf-8"
       },
       body: JSON.stringify({ answers: userAnswers })
     });
 
-    const result = await response.json();
-
-    const best = result.bestMatch;
-    const others = result.others || [];
+    const data = await response.json();
+    const { bestMatch, others } = data;
 
     const bestDiv = document.getElementById("best-match");
     bestDiv.innerHTML = `
       <div class="angel-card">
-        <h3>${best.name}</h3>
-        <p>${best.description}</p>
-        <img src="${best.image}" alt="${best.name}" style="max-width: 100%; margin-top: 12px;" />
+        <h3>${bestMatch.name}</h3>
+        <p>${bestMatch.description}</p>
+        <img src="${bestMatch.image}" alt="${bestMatch.name}" style="max-width: 100%; margin-top: 12px;" />
       </div>
     `;
 
@@ -92,10 +92,9 @@ async function showResult() {
     });
 
   } catch (error) {
-    console.error("결과 로딩 실패:", error);
+    console.error("Google 웹앱 연동 실패:", error);
     document.getElementById("best-match").innerText = "결과를 불러오는 데 문제가 발생했습니다.";
   }
 }
 
-// 초기화
 window.onload = showQuestion;
