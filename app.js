@@ -164,5 +164,15 @@ async function saveToSheet(payload) {
 // ==========================
 window.addEventListener("DOMContentLoaded", () => {
   bindNav();
+  // 처음부터 다시하기 버튼 이벤트
+  const restartBtn = document.getElementById("restartBtn");
+  if (restartBtn) {
+    restartBtn.onclick = () => {
+      currentQuestionIndex = 0;
+      userAnswers.fill(undefined);
+
+      $("result").classList.add("hidden");
+      $("quiz").classList.remove("hidden");
+
   showQuestion();
 });
