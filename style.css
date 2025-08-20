@@ -1,90 +1,93 @@
+/* 기본 초기화 및 레이아웃 설정 */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f8f8f8;
-  color: #333;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #ffffff;
+  color: #333;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .container {
   max-width: 800px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-h1 {
-  font-size: 28px;
-  font-weight: 700;
-}
-
-p {
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-
-#quiz, #result {
-  margin-top: 30px;
-}
-
-#question-text {
-  font-size: 18px;
-  margin-bottom: 15px;
-}
-
-#answer-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-button {
-  padding: 10px 16px;
-  margin-top: 20px;
-  border: none;
-  background-color: #333;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button:hover {
-  background-color: #555;
+  width: 90%;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
 .hidden {
   display: none;
 }
 
-/* 결과 엔젤 스타일 */
-.main-angel {
+h1, h2, h3, h4 {
   text-align: center;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  color: #222;
+}
+
+/* 질문 섹션 */
+#quiz {
+  text-align: center;
+}
+
+#question-box {
+  font-size: 1.25rem;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+#options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  padding: 12px 20px;
+  font-size: 1rem;
+  background-color: #f0f4f8;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.option:hover {
+  background-color: #dbeafe;
+}
+
+/* 결과 섹션 */
+#result {
+  text-align: center;
+  padding-top: 20px;
+}
+
+/* 가장 잘 어울리는 엔젤 */
+.angel-featured {
   margin-bottom: 40px;
 }
 
-.main-angel-image {
-  width: 220px;
-  height: auto;
-  border-radius: 10px;
-  margin-top: 10px;
+.angel-featured .angel-card {
+  border: 2px solid #60a5fa;
+  background-color: #eff6ff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.other-angels-container {
+/* 기타 추천 엔젤들 */
+.angel-recommendations {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
+  justify-content: center;
 }
 
-.other-angel-card {
-  width: 180px;
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.other-angel-image {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
+.angel-recommendations .
