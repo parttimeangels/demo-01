@@ -15,13 +15,20 @@
 
 
 <div id="result" class="hidden">
-<h2>당신에게 가장 적합한 엔젤</h2>
-<div id="best-match"></div>
-<h3>그 외 추천 엔젤</h3>
-<div id="other-matches"></div>
-<button onclick="restartQuiz()">다시 시작하기</button>
-</div>
+  <h2>당신에게 가장 어울리는 엔젤</h2>
+  <div class="main-angel">
+    <img id="main-angel-image" src="" alt="" class="main-angel-image" />
+    <h3 id="main-angel-name"></h3>
+    <p id="main-angel-description"></p>
+  </div>
 
+  <h3>다른 추천 엔젤</h3>
+  <div id="other-angels" class="other-angels-container">
+    <!-- 여기 안에 app.js가 다른 추천 엔젤을 자동 생성 -->
+  </div>
+
+  <button id="restart-btn">다시 시작하기</button>
+</div>
 
 <script src="app.js"></script>
 </body>
