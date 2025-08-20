@@ -1,11 +1,13 @@
-// app.js (최종본) — 로컬 angels.json으로 화면 출력 + Google Apps Script로 응답 저장
-
-// ===== 설정 =====
+// ==========================
+// 설정
+// ==========================
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbypCCeRa-i4vIRBioEIxqKziSPghABPVxLl8oLc1qoIC0xdTiN6jQUHz-r77_NPXlcU4Q/exec";
+  "https://script.google.com/macros/s/AKfycbw9flu7oc49WOywz-FlUc1JfzWsdopiMgOH_kRsdLWwtgEPtsnwVj_mvYIq1yPgXFSdAQ/exec";
 const ANGELS_SRC = "angels.json";
 
-// ===== 질문 데이터 =====
+// ==========================
+// 질문 데이터
+// ==========================
 const questions = [
   { question: "혼자 있는 시간이 많을 때 당신은?", options: ["외로워진다", "편안하다", "불안하다", "무감각해진다"] },
   { question: "사람과 갈등이 생겼을 때 당신의 반응은?", options: ["화를 내고 후회한다", "상대 탓을 한다", "내 탓을 한다", "아무렇지 않은 척 한다"] },
@@ -14,16 +16,17 @@ const questions = [
   { question: "지금 당신에게 가장 필요한 것은?", options: ["다정한 말", "현실적인 조언", "함께 있어줄 사람", "아무 말 없이 들어주는 사람"] }
 ];
 
-// ===== 상태 =====
+// ==========================
+// 상태
+// ==========================
 let currentQuestionIndex = 0;
 const userAnswers = new Array(questions.length).fill(undefined);
-
-// ===== 유틸 =====
 const $ = (id) => document.getElementById(id);
 
-// ===== 렌더: 질문 =====
+// ==========================
+// 질문 표시
+// ==========================
 function showQuestion() {
-  // 마지막 이후로 넘어가면 결과 표시
   if (currentQuestionIndex >= questions.length) {
     showResult();
     return;
@@ -43,14 +46,13 @@ function showQuestion() {
     btn.className = "option";
     btn.textContent = label;
 
-    // 이전에 선택했으면 표시
     if (userAnswers[currentQuestionIndex] === idx) {
       btn.classList.add("selected");
+      nextBtn.disabled = false;
     }
 
     btn.onclick = () => {
-      // 기존 선택 해제 후 현재 버튼 선택
-      optionsBox.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
+      optionsBox.querySelectorAll(".option").forEach((b) => b.classList.remove("selected"));
       btn.classList.add("selected");
       userAnswers[currentQuestionIndex] = idx;
       nextBtn.disabled = false;
@@ -59,12 +61,13 @@ function showQuestion() {
     optionsBox.appendChild(btn);
   });
 
-  // 네비게이션 상태
   prevBtn.disabled = currentQuestionIndex === 0;
   nextBtn.disabled = userAnswers[currentQuestionIndex] === undefined;
 }
 
-// ===== 이벤트: 이전/다음 =====
+// ==========================
+// 네비게이션
+// ==========================
 function bindNav() {
   $("prevBtn").onclick = () => {
     if (currentQuestionIndex > 0) {
@@ -79,61 +82,58 @@ function bindNav() {
       currentQuestionIndex++;
       showQuestion();
     } else {
-      // 마지막 질문에서 다음 → 결과
       showResult();
     }
   };
 }
 
-// ===== 결과 표시 =====
+// ==========================
+// 결과 표시
+// ==========================
 async function showResult() {
   $("quiz").classList.add("hidden");
   $("result").classList.remove("hidden");
 
   try {
-    // 1) 로컬 angels.json으로 화면 렌더
+    // 1) angels.json 로드
     const res = await fetch(ANGELS_SRC);
     const angels = await res.json();
 
-    // 매우 단순한 매칭: 답변 인덱스 합계 % 엔젤 수
+    // 간단 매칭 로직
     const total = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
     const bestIndex = angels.length ? total % angels.length : 0;
     const best = angels[bestIndex] || {};
     const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
 
+    // 베스트 엔젤 출력
     $("best-match").innerHTML = `
       <div class="angel-card">
         <h3>${best.name ?? "Angel"}</h3>
         <p>${best.description ?? ""}</p>
-        ${best.image ? `<img src="${best.image}" alt="${best.name ?? "Angel"}" />` : ""}
+        ${best.image ? `<img src="${best.image}" alt="${best.name}" />` : ""}
       </div>
     `;
 
+    // 다른 엔젤 출력
     const otherWrap = $("other-matches");
     otherWrap.innerHTML = "";
-    others.forEach(a => {
+    others.forEach((a) => {
       const div = document.createElement("div");
       div.className = "angel-card";
       div.innerHTML = `
         <h4>${a.name ?? "Angel"}</h4>
         <p>${a.description ?? ""}</p>
-        ${a.image ? `<img src="${a.image}" alt="${a.name ?? "Angel"}" />` : ""}
+        ${a.image ? `<img src="${a.image}" alt="${a.name}" />` : ""}
       `;
       otherWrap.appendChild(div);
     });
 
-    // 2) Google Apps Script로 응답 저장 (응답 본문은 읽지 않음)
-    //    CORS 이슈 회피를 위해 no-cors 사용
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        answers: userAnswers,
-        bestMatch: best?.name ?? null,
-        timestamp: new Date().toISOString()
-      })
-    }).catch(() => { /* 저장 실패는 UI에 영향 X */ });
+    // 2) Google Apps Script로 저장
+    await saveToSheet({
+      answers: userAnswers,
+      bestMatch: best?.name ?? null,
+      timestamp: new Date().toISOString(),
+    });
 
   } catch (err) {
     console.error("결과 처리 오류:", err);
@@ -141,7 +141,27 @@ async function showResult() {
   }
 }
 
-// ===== 초기화 =====
+// ==========================
+// Google Sheet 저장
+// ==========================
+async function saveToSheet(payload) {
+  try {
+    await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: {
+        // 중요: 프리플라이트 회피용
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch (e) {
+    console.warn("saveToSheet failed:", e);
+  }
+}
+
+// ==========================
+// 초기화
+// ==========================
 window.addEventListener("DOMContentLoaded", () => {
   bindNav();
   showQuestion();
