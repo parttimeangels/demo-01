@@ -1,1 +1,20 @@
-
+[
+  {
+    "name": "Angel L",
+    "skill": "기억 상담",
+    "bio": "어두운 기억을 함께 바라봅니다.",
+    "photo": "angel1.jpg"
+  },
+  {
+    "name": "Angel J",
+    "skill": "관계 위로",
+    "bio": "잊지 못한 사랑을 위로합니다.",
+    "photo": "angel2.jpg"
+  },
+  {
+    "name": "Angel H",
+    "skill": "불안 완화",
+    "bio": "당신의 불안을 잠시 내려놓게 돕습니다.",
+    "photo": "angel3.jpg"
+  }
+]
