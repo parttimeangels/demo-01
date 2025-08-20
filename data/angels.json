@@ -1,20 +1,26 @@
 [
   {
-    "name": "Angel L",
+    "name": "Angel J",
+    "photo": "angel1.jpg",
     "skill": "기억 상담",
-    "bio": "어두운 기억을 함께 바라봅니다.",
-    "photo": "angel1.jpg"
+    "bio": "상실과 그리움을 함께 애도하는 감성형 엔젤입니다."
   },
   {
-    "name": "Angel J",
-    "skill": "관계 위로",
-    "bio": "잊지 못한 사랑을 위로합니다.",
-    "photo": "angel2.jpg"
+    "name": "Angel L",
+    "photo": "angel2.jpg",
+    "skill": "불안 완화",
+    "bio": "불안을 다정하게 감싸주는 조용한 치유형 엔젤입니다."
   },
   {
     "name": "Angel H",
-    "skill": "불안 완화",
-    "bio": "당신의 불안을 잠시 내려놓게 돕습니다.",
-    "photo": "angel3.jpg"
+    "photo": "angel3.jpg",
+    "skill": "분노 해소",
+    "bio": "혼란과 억울함 속에서 방향을 제시하는 강단형 엔젤입니다."
+  },
+  {
+    "name": "Angel Y",
+    "photo": "angel4.jpg",
+    "skill": "무기력 케어",
+    "bio": "무기력함과 고립감 속에서도 당신 곁을 지키는 위로형 엔젤입니다."
   }
 ]
