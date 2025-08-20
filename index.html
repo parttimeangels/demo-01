@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>파트타임엔젤 테스트</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>파트타임엔젤 매칭 테스트</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="start-screen">
-    <h1>나에게 맞는 엔젤 찾기</h1>
-    <button id="start-btn">시작하기</button>
-  </div>
+  <div class="container">
 
-  <div id="quiz" class="hidden">
-    <div id="question-box"></div>
-    <div id="options"></div>
-    <div class="nav-buttons">
-      <button id="prev-btn">이전</button>
-      <button id="next-btn">다음</button>
+    <!-- 시작 화면 -->
+    <div id="start-screen">
+      <h1>파트타임엔젤 테스트</h1>
+      <button id="start-btn">시작하기</button>
     </div>
-  </div>
 
-  <div id="result" class="hidden">
-    <h2>당신에게 가장 잘 어울리는 엔젤</h2>
-    <div id="best-match"></div>
-    <h3>다른 추천 엔젤</h3>
-    <div id="other-matches" class="angel-list"></div>
-    <button onclick="restartQuiz()">다시하기</button>
-  </div>
+    <!-- 퀴즈 화면 -->
+    <div id="quiz" class="hidden">
+      <div id="question-box" class="question-box"></div>
+      <div class="choices" id="options"></div>
+      <div class="nav-buttons">
+        <button id="prev-btn" class="nav-btn">이전</button>
+        <button id="next-btn" class="nav-btn">다음</button>
+      </div>
+    </div>
 
+    <!-- 결과 화면 -->
+    <div id="result" class="hidden">
+      <h2>당신에게 가장 잘 어울리는 엔젤</h2>
+      <div id="best-match"></div>
+      <h3>그 외 추천 엔젤</h3>
+      <div id="other-matches" class="other-matches"></div>
+      <button id="restart-btn">다시 시작하기</button>
+    </div>
+  
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
