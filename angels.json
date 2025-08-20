@@ -1,26 +1,22 @@
 [
   {
-    "name": "Angel J",
-    "photo": "angel1.jpg",
-    "skill": "기억 상담",
-    "bio": "상실과 그리움을 함께 애도하는 감성형 엔젤입니다."
+    "name": "엔젤 A",
+    "description": "당신의 마음을 가장 잘 어루만져 줄 다정한 존재",
+    "image": "angel1.jpg"
   },
   {
-    "name": "Angel L",
-    "photo": "angel2.jpg",
-    "skill": "불안 완화",
-    "bio": "불안을 다정하게 감싸주는 조용한 치유형 엔젤입니다."
+    "name": "엔젤 B",
+    "description": "현실적인 조언과 함께 걸어주는 친구",
+    "image": "angel2.jpg"
   },
   {
-    "name": "Angel H",
-    "photo": "angel3.jpg",
-    "skill": "분노 해소",
-    "bio": "혼란과 억울함 속에서 방향을 제시하는 강단형 엔젤입니다."
+    "name": "엔젤 C",
+    "description": "말 없이 당신 곁을 지켜줄 이해자",
+    "image": "angel3.jpg"
   },
   {
-    "name": "Angel Y",
-    "photo": "angel4.jpg",
-    "skill": "무기력 케어",
-    "bio": "무기력함과 고립감 속에서도 당신 곁을 지키는 위로형 엔젤입니다."
+    "name": "엔젤 D",
+    "description": "무기력한 당신에게 새로운 바람을 불어넣는 존재",
+    "image": "angel4.jpg"
   }
 ]
