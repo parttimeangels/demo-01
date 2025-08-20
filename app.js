@@ -3,7 +3,7 @@ console.log("[app.js] 로드 OK");
 
 // ===== 설정 =====
 const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbypCCeRa-i4vIRBioEIxqKziSPghABPVxLl8oLc1qoIC0xdTiN6jQUHz-r77_NPXlcU4Q/exec";
+  "https://script.google.com/macros/s/AKfycbx2pBnha3LyPzlzklccW8JKDa-0TA_46L7lOE9g3F7gNbsaYOKau9qWOHjicsMX-kzNNQ/exec";
 const ANGELS_SRC = "angels.json";
 
 // ===== 데이터 =====
@@ -126,10 +126,10 @@ async function showResult() {
 
     // 저장 (CORS-safe)
     saveToSheet({
-      answers: userAnswers,
-      bestMatch: best && best.name ? best.name : null,
-      timestamp: new Date().toISOString()
-    });
+  answers: userAnswers,
+  bestMatch: best?.name ?? null,
+  timestamp: new Date().toISOString()
+});
   } catch (err) {
     console.error("결과 처리 오류:", err);
     const bm = $("best-match");
