@@ -1,90 +1,40 @@
-/* Reset 기본 */
-body, h1, h2, h3, p, ul, li, button {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Helvetica Neue', sans-serif;
-}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>파트타임엔젤 심리 테스트</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
 
-/* 전체 페이지 배경 및 중앙정렬 */
-body {
-  background: #f7f8fa;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 24px;
-}
+    <!-- 퀴즈 시작 화면 -->
+    <div id="quiz">
+      <h1>파트타임엔젤 테스트</h1>
+      <div id="question-box">질문이 여기에 표시됩니다.</div>
+      <div id="options"></div>
+    </div>
 
-/* 반응형 중앙 컨테이너 */
-.container {
-  width: 100%;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.08);
-}
+    <!-- 결과 화면 -->
+    <div id="result" class="hidden">
+      <h2>당신에게 가장 잘 어울리는 엔젤</h2>
+      <div class="angel-featured">
+        <div class="angel-card" id="best-match">
+          <!-- 베스트 매치 엔젤 정보가 JS로 삽입됨 -->
+        </div>
+      </div>
 
-/* 질문 영역 */
-#quiz, #result {
-  display: none;
-}
-#quiz.active, #result.active {
-  display: block;
-}
+      <h3>그 외 추천 엔젤</h3>
+      <div class="angel-recommendations" id="other-matches">
+        <!-- 추가 추천 엔젤 카드들 -->
+      </div>
 
-h2 {
-  margin-bottom: 16px;
-  font-size: 1.5rem;
-  text-align: center;
-}
+      <button class="call-button" onclick="restartQuiz()">처음으로 돌아가기</button>
+    </div>
 
-/* 옵션 버튼 스타일 */
-.option {
-  width: 100%;
-  margin: 8px 0;
-  padding: 14px 18px;
-  background-color: #e3e9f3;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.option:hover {
-  background-color: #d0d8e8;
-}
+  </div>
 
-/* 결과 카드 */
-.angel-card {
-  margin: 16px 0;
-  padding: 16px;
-  background-color: #f1f5f9;
-  border-radius: 8px;
-  text-align: center;
-}
-.angel-card img {
-  margin-top: 12px;
-  max-width: 100%;
-  border-radius: 6px;
-}
-
-/* 모바일 대응 */
-@media (max-width: 480px) {
-  body {
-    padding: 12px;
-  }
-
-  .container {
-    padding: 16px;
-  }
-
-  .option {
-    font-size: 0.95rem;
-  }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-}
+  <script src="app.js"></script>
+</body>
+</html>
