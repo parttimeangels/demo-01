@@ -1,65 +1,66 @@
 body {
-  font-family: sans-serif;
-  max-width: 600px;
-  margin: auto;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
   padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.question {
+  font-size: 1.4rem;
+  margin-bottom: 30px;
   text-align: center;
 }
 
-.hidden {
-  display: none;
+.choices {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
 }
 
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.option.selected {
-  background-color: #4caf50;
-  color: white;
-}
-
-/* Best match - 큰 카드 */
-#best-match .angel-card {
-  border: 2px solid #333;
+.choice-btn {
+  width: 100%;
+  max-width: 400px;
   padding: 15px;
-  margin: 20px auto;
+  font-size: 1.1rem;
   text-align: center;
-}
-
-#best-match img {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-}
-
-/* Other matches - 한 줄에 두 개, 작은 카드 */
-#other-matches {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-#other-matches .angel-card {
-  flex: 1;
+  background-color: #f0f0f0;
   border: 1px solid #aaa;
-  padding: 10px;
-  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-#other-matches .angel-card img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
+.choice-btn:hover {
+  background-color: #ddd;
 }
 
-.nav-buttons {
+.navigation {
   display: flex;
-  justify-content: center;   /* 중앙 정렬 */
-  gap: 20px;                  /* 버튼 사이 간격 */
-  margin-top: 30px;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
 }
+
+.nav-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  background-color: #f3f3f3;
+  cursor
