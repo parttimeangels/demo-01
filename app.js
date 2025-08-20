@@ -20,6 +20,37 @@ let currentQuestionIndex = 0;
 const userAnswers = new Array(questions.length).fill(undefined);
 const $ = (id) => document.getElementById(id);
 
+
+// 선택 다수결로 매칭 (미응답 제외, 동점이면 가장 최근 선택 타입 우선)
+function pickMatchByMajority(angels) {
+  const N = angels.length || 1;
+  const scores = new Array(N).fill(0);
+
+  // 각 문항의 선택(0~3)을 해당 엔젤(0~N-1)에 +1
+  userAnswers.forEach(a => {
+    if (a !== undefined) scores[a % N] += 1;
+  });
+
+  // 동점일 때 “가장 최근에 고른 타입”을 우선
+  let lastPicked = 0;
+  for (let i = userAnswers.length - 1; i >= 0; i--) {
+    if (userAnswers[i] !== undefined) { lastPicked = userAnswers[i] % N; break; }
+  }
+
+  const order = [...scores.keys()].sort((i, j) => {
+    const diff = scores[j] - scores[i];
+    if (diff !== 0) return diff;
+    if (i === lastPicked && j !== lastPicked) return -1;
+    if (j === lastPicked && i !== lastPicked) return 1;
+    return i - j; // 그래도 같으면 작은 번호 우선
+  });
+
+  const bestIndex = order[0];
+  const best = angels[bestIndex] || {};
+  const others = order.slice(1, 3).map(i => angels[i]).filter(Boolean);
+  return { bestIndex, best, others, scores };
+}
+
 // ===== 토글 =====
 function showSection(which) {
   const quiz = $("quiz");
@@ -108,10 +139,8 @@ async function showResult() {
     const res = await fetch(ANGELS_SRC);
     const angels = await res.json();
 
-    const total = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
-    const bestIndex = angels.length ? total % angels.length : 0;
-    const best = angels[bestIndex] || {};
-    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
+    const { best, others } = pickMatchByMajority(angels);
+
 
     // 베스트 매치 카드
     renderAngelCard($("best-match"), best, true);
