@@ -29,10 +29,14 @@ document.getElementById("best-match").innerHTML = `
 const otherDiv = document.getElementById("other-matches");
 otherDiv.innerHTML = "";
 others.forEach(a => {
-const div = document.createElement("div");
-div.className = "angel-card";
-div.innerHTML = `<h4>${a.name}</h4><p>${a.description}</p>`;
-otherDiv.appendChild(div);
+  const div = document.createElement("div");
+  div.className = "angel-card";
+  div.innerHTML = `
+    <h4>${a.name}</h4>
+    <p>${a.description}</p>
+    <img src="${a.image}" alt="${a.name}" style="max-width: 100%; margin-top: 12px;" />
+  `;
+  otherDiv.appendChild(div);
 });
 
 
