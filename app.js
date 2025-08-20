@@ -54,22 +54,28 @@ async function showResult() {
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.remove("hidden");
 
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypCCeRa-i4vIRBioEIxqKziSPghABPVxLl8oLc1qoIC0xdTiN6jQUHz-r77_NPXlcU4Q/exec";
+
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbw8D5Wt6ZPu6k0zPCCKUwdtuPo34vX7qfuzqJz6UpNZoZyWj4Dp0Fh2_ezctjOrsqZyEg/exec");
-    const angels = await response.json();
+    const response = await fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ answers: userAnswers })
+    });
 
-    const score = userAnswers.reduce((a, b) => a + b, 0);
-    const bestIndex = score % angels.length;
-    const bestAngel = angels[bestIndex];
+    const result = await response.json();
 
-    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
+    const best = result.bestMatch;
+    const others = result.others || [];
 
     const bestDiv = document.getElementById("best-match");
     bestDiv.innerHTML = `
       <div class="angel-card">
-        <h3>${bestAngel.name}</h3>
-        <p>${bestAngel.description}</p>
-        <img src="${bestAngel.image}" alt="${bestAngel.name}" style="max-width: 100%; margin-top: 12px;" />
+        <h3>${best.name}</h3>
+        <p>${best.description}</p>
+        <img src="${best.image}" alt="${best.name}" style="max-width: 100%; margin-top: 12px;" />
       </div>
     `;
 
@@ -86,9 +92,10 @@ async function showResult() {
     });
 
   } catch (error) {
-    console.error("매칭 결과를 불러오지 못했습니다:", error);
+    console.error("결과 로딩 실패:", error);
     document.getElementById("best-match").innerText = "결과를 불러오는 데 문제가 발생했습니다.";
   }
 }
 
+// 초기화
 window.onload = showQuestion;
