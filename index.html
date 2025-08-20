@@ -1,35 +1,41 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>파트타임엔젤 매칭</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>파트타임엔젤 매칭 테스트</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div id="quiz">
-<h2 id="question-box"></h2>
-<div id="options"></div>
-</div>
+  <div class="container">
+    <h1>파트타임엔젤 매칭 테스트</h1>
+    <p>5개의 질문에 답하면 당신에게 어울리는 엔젤을 추천해드립니다.</p>
 
+    <!-- 퀴즈 영역 -->
+    <div id="quiz">
+      <div id="question-container">
+        <p id="question-text"></p>
+        <div id="answer-buttons"></div>
+      </div>
+      <button id="next-btn">다음</button>
+    </div>
 
-<div id="result" class="hidden">
-  <h2>당신에게 가장 어울리는 엔젤</h2>
-  <div class="main-angel">
-    <img id="main-angel-image" src="" alt="" class="main-angel-image" />
-    <h3 id="main-angel-name"></h3>
-    <p id="main-angel-description"></p>
+    <!-- 결과 영역 -->
+    <div id="result" class="hidden">
+      <h2>당신에게 가장 어울리는 엔젤</h2>
+      <div class="main-angel">
+        <img id="main-angel-image" src="" alt="Main Angel Image" class="main-angel-image"/>
+        <h3 id="main-angel-name"></h3>
+        <p id="main-angel-description"></p>
+      </div>
+
+      <h3>다른 추천 엔젤</h3>
+      <div id="other-angels" class="other-angels-container"></div>
+
+      <button id="restart-btn">다시 시작하기</button>
+    </div>
   </div>
 
-  <h3>다른 추천 엔젤</h3>
-  <div id="other-angels" class="other-angels-container">
-    <!-- 여기 안에 app.js가 다른 추천 엔젤을 자동 생성 -->
-  </div>
-
-  <button id="restart-btn">다시 시작하기</button>
-</div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
