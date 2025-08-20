@@ -2,40 +2,40 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>파트타임엔젤 심리 매칭</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <!-- 퀴즈 -->
-  <div id="quiz" class="container">
+
+  <!-- 퀴즈(초기: 보임) -->
+  <section id="quiz" class="container">
     <h1>파트타임엔젤 매칭 테스트</h1>
-    <p>5개의 질문에 답하면 당신에게 어울리는 엔젤을 추천해드립니다.</p>
+    <p class="lead">5개의 질문에 답하면 당신에게 어울리는 엔젤을 추천해드립니다.</p>
 
     <div id="question-box" class="question"></div>
     <div id="options" class="options"></div>
 
     <div id="nav-buttons">
-      <button id="prevBtn">이전</button>
-      <button id="nextBtn" disabled>다음</button>
+      <button id="prevBtn" type="button">이전</button>
+      <button id="nextBtn" type="button" disabled>다음</button>
     </div>
-  </div>
+  </section>
 
-  <!-- 결과 -->
-  <div id="result" class="container hidden">
+  <!-- 결과(초기: 숨김) -->
+  <section id="result" class="container hidden" aria-hidden="true">
     <h2>당신에게 가장 어울리는 엔젤</h2>
     <div id="best-match"></div>
 
     <h3>다른 추천 엔젤</h3>
     <div id="other-matches"></div>
 
-    <div style="text-align:center; margin-top:20px;">
-      <button id="restartBtn">처음부터 다시하기</button>
+    <div class="center mt-20">
+      <button id="restartBtn" type="button">처음부터 다시하기</button>
     </div>
-  </div>
+  </section>
 
-  <!-- 스크립트: body 닫기 직전 / 캐시버스터 + defer -->
-  <script src="./app.js?v=2025-08-20-03" defer
-          onerror="console.error('app.js 로드 실패 - 경로/파일명 확인')"></script>
+  <!-- 스크립트: 반드시 body 닫기 직전 -->
+  <script src="./app.js?v=toggle-fix" defer></script>
 </body>
 </html>
