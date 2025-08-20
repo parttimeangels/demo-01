@@ -1,116 +1,105 @@
-const $ = (id) => document.getElementById(id);
-let selectedAngelName = null;
+// app.js
 
-const questions = [
+const quizData = [
   {
-    question: "Q1. 요즘 가장 가까운 감정은?",
-    options: ["무기력함", "불안함", "분노", "상실감"],
-    tags: ["depressed", "anxious", "angry", "grieving"]
+    question: "지금 당신의 기분은 어떤가요?",
+    options: ["불안하고 복잡하다", "조용히 위로받고 싶다", "누군가 대신 결정을 내려줬으면 한다", "그냥 아무 말이나 나누고 싶다"]
   },
   {
-    question: "Q2. 감정을 가장 많이 나누는 대상은?",
-    options: ["나 자신 뿐이다", "가족이나 연인", "친구나 동료", "전문가"],
-    tags: ["closed", "intimate", "social", "self-aware"]
+    question: "상담자에게 바라는 태도는?",
+    options: ["논리적이고 분석적인", "다정하고 수용적인", "직설적이고 현실적인", "엉뚱하고 창의적인"]
   },
   {
-    question: "Q3. 필요한 위로의 방식은?",
-    options: ["잘 들어주는 사람", "그저 곁에 있어주는 사람", "단호한 조언자", "함께 울어주는 사람"],
-    tags: ["listener", "presence", "directive", "empathetic"]
+    question: "가장 힘들었던 기억은 어떤 감정이었나요?",
+    options: ["버려졌다는 느낌", "죄책감과 후회", "수치심과 분노", "막연한 공허함"]
   },
   {
-    question: "Q4. 지금 떠오르는 장소는?",
-    options: ["아무도 없는 빈 방", "익숙한 거리", "병원이나 상담실", "어린 시절 집"],
-    tags: ["isolated", "ordinary", "healing", "nostalgic"]
+    question: "이상적인 대화 상대는?",
+    options: ["내 말을 잘 정리해주는 사람", "말 없이 곁에 있어주는 사람", "강한 리더십으로 이끌어주는 사람", "내 상상을 따라와 주는 사람"]
   },
   {
-    question: "Q5. 나 자신을 표현하자면?",
-    options: ["감정을 숨긴다", "속마음을 알고 싶다", "감정에 솔직하다", "타인 감정에 민감하다"],
-    tags: ["guarded", "curious", "expressive", "sensitive"]
+    question: "지금 가장 필요한 것은?",
+    options: ["명확한 해답", "공감과 위로", "현실적인 조언", "재미와 자극"]
   }
 ];
 
-const angels = [
-  { name: "Angel J", photo: "angel1.jpg", tags: ["grieving", "empathetic", "nostalgic"], desc: "상실과 그리움에 깊이 공감하는 엔젤입니다." },
-  { name: "Angel L", photo: "angel2.jpg", tags: ["anxious", "presence", "healing"], desc: "불안을 다정히 감싸주는 치유형 엔젤입니다." },
-  { name: "Angel H", photo: "angel3.jpg", tags: ["angry", "directive", "expressive"], desc: "분노와 혼란 속에서도 방향을 제시하는 강단 있는 엔젤입니다." },
-  { name: "Angel Y", photo: "angel4.jpg", tags: ["depressed", "listener", "isolated"], desc: "고요한 공간에서 조용히 함께해주는 위로형 엔젤입니다." }
-];
+let currentQuestion = 0;
+let answers = [];
 
-let current = 0;
-const userTags = [];
+const questionBox = document.getElementById("question-box");
+const optionsBox = document.getElementById("options");
+const resultSection = document.getElementById("result");
+const bestMatchBox = document.getElementById("best-match");
+const otherMatchesBox = document.getElementById("other-matches");
 
-const box = $("question-box");
-const options = $("options");
-const quiz = $("quiz");
-const result = $("result");
-const bestMatch = $("best-match");
-const otherMatches = $("other-matches");
+function showQuestion(index) {
+  const q = quizData[index];
+  questionBox.innerText = q.question;
+  optionsBox.innerHTML = "";
 
-function showQuestion() {
-  box.textContent = questions[current].question;
-  options.innerHTML = "";
-  questions[current].options.forEach((opt, idx) => {
+  q.options.forEach((option, i) => {
     const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.className = "option";
-    btn.onclick = () => {
-      userTags.push(questions[current].tags[idx]);
-      current++;
-      if (current < questions.length) showQuestion();
-      else showResult();
-    };
-    options.appendChild(btn);
+    btn.classList.add("option");
+    btn.innerText = option;
+    btn.addEventListener("click", () => handleAnswer(i));
+    optionsBox.appendChild(btn);
   });
 }
 
-function showResult() {
-  quiz.classList.add("hidden");
-  result.classList.remove("hidden");
+function handleAnswer(answerIndex) {
+  answers.push(answerIndex);
+  currentQuestion++;
 
-  const scores = angels.map(a => {
-    const match = a.tags.filter(tag => userTags.includes(tag)).length;
-    return { ...a, score: match };
-  }).sort((a, b) => b.score - a.score);
+  if (currentQuestion < quizData.length) {
+    showQuestion(currentQuestion);
+  } else {
+    showResult();
+  }
+}
 
-  const top = scores[0];
-  selectedAngelName = top.name;
-  const imgSrc = `assets/${top.photo || 'angel1.jpg'}`;
+async function showResult() {
+  const response = await fetch("angels.json");
+  const angels = await response.json();
 
-  bestMatch.innerHTML = `
-    <img src="${imgSrc}" alt="${top.name}" style="width:100%; max-width:320px; border-radius:12px; margin-bottom:16px;">
-    <h3>${top.name}</h3>
-    <p>${top.desc}</p>
+  const scores = angels.map(angel => {
+    let score = 0;
+    answers.forEach((ans, i) => {
+      if (angel.profile[i] === ans) score++;
+    });
+    return { ...angel, score };
+  });
+
+  scores.sort((a, b) => b.score - a.score);
+  const [best, ...others] = scores;
+
+  document.getElementById("quiz").classList.add("hidden");
+  resultSection.classList.remove("hidden");
+
+  bestMatchBox.innerHTML = `
+    <div class="angel-card">
+      <h3>${best.name}</h3>
+      <p>${best.description}</p>
+      <img src="${best.photo}" alt="${best.name}" style="width:100%; max-width:300px; border-radius:12px; margin-top:10px;" />
+    </div>
   `;
 
-  scores.slice(1, 3).forEach(a => {
-    const img = `assets/${a.photo || 'angel1.jpg'}`;
-    const div = document.createElement("div");
-    div.className = "angel-card";
-    div.innerHTML = `
-      <img src="${img}" alt="${a.name}" style="width:100%; max-width:200px; border-radius:10px; margin-bottom:12px;">
-      <h4>${a.name}</h4>
-      <p>매칭률 ${a.score}/3</p>
-      <p>${a.desc}</p>
-    `;
-    otherMatches.appendChild(div);
-  });
+  otherMatchesBox.innerHTML = others.slice(0, 3).map(a => `
+    <div class="angel-card">
+      <strong>${a.name}</strong>
+      <p style="font-size:0.9em; opacity:0.8;">매칭률: ${a.score}/5</p>
+    </div>
+  `).join("");
 
-  sendToSheet(top);
-}
-
-function sendToSheet(result) {
-  const submitData = {
-    nickname: "관객",
-    q1: userTags[0],
-    q2: userTags[1],
-    q3: userTags[2],
-    q4: userTags[3],
-    q5: userTags[4],
-    matched_angel: result.name,
-    match_score: result.score
-  };
+  // 저장
+  const formData = new FormData();
+  formData.append("answers", answers.join(","));
+  formData.append("bestMatch", best.name);
 
   fetch("https://script.google.com/macros/s/AKfycbw8D5Wt6ZPu6k0zPCCKUwdtuPo34vX7qfuzqJz6UpNZoZyWj4Dp0Fh2_ezctjOrsqZyEg/exec", {
     method: "POST",
-    body: JSON.stringify(submitData),
-    headers: { "Content-Type": "application/json" }
+    body: formData
+  });
+}
+
+// 시작
+showQuestion(currentQuestion);
