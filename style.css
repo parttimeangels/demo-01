@@ -4,7 +4,7 @@
 }
 
 /* 필수: 숨김 강제 */
-.hidden{ display:none !important; }
+.hidden { display: none !important; }
 
 /* 기본 */
 *{ box-sizing:border-box; }
