@@ -22,58 +22,32 @@ const questions = [
 ];
 
 let currentQuestionIndex = 0;
-const userAnswers = new Array(questions.length).fill(null);
-
-document.getElementById("start-btn").onclick = () => {
-  document.getElementById("start-screen").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-  showQuestion();
-};
-
-document.getElementById("prev-btn").onclick = () => {
-  if (currentQuestionIndex > 0) {
-    currentQuestionIndex--;
-    showQuestion();
-  }
-};
-
-document.getElementById("next-btn").onclick = () => {
-  if (userAnswers[currentQuestionIndex] !== null) {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-      showQuestion();
-    } else {
-      showResult();
-    }
-  } else {
-    alert("옵션을 선택해주세요.");
-  }
-};
+const userAnswers = [];
 
 function showQuestion() {
-  const q = questions[currentQuestionIndex];
+  if (currentQuestionIndex >= questions.length) {
+    showResult();
+    return;
+  }
+
   const questionBox = document.getElementById("question-box");
   const optionsBox = document.getElementById("options");
 
-  questionBox.innerText = q.question;
+  const current = questions[currentQuestionIndex];
+  questionBox.innerText = current.question;
   optionsBox.innerHTML = "";
 
-  q.options.forEach((optionText, idx) => {
+  current.options.forEach((optionText, idx) => {
     const btn = document.createElement("button");
     btn.className = "option";
     btn.innerText = optionText;
-    if (userAnswers[currentQuestionIndex] === idx) btn.classList.add("selected");
-
     btn.onclick = () => {
-      userAnswers[currentQuestionIndex] = idx;
+      userAnswers.push(idx);
+      currentQuestionIndex++;
       showQuestion();
     };
     optionsBox.appendChild(btn);
   });
-
-  document.getElementById("prev-btn").disabled = currentQuestionIndex === 0;
-  document.getElementById("next-btn").innerText =
-    currentQuestionIndex === questions.length - 1 ? "결과보기" : "다음";
 }
 
 async function showResult() {
@@ -81,20 +55,21 @@ async function showResult() {
   document.getElementById("result").classList.remove("hidden");
 
   try {
-    const response = await fetch("angels.json");
+    const response = await fetch("https://script.google.com/macros/s/AKfycbw8D5Wt6ZPu6k0zPCCKUwdtuPo34vX7qfuzqJz6UpNZoZyWj4Dp0Fh2_ezctjOrsqZyEg/exec");
     const angels = await response.json();
 
-    const score = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
+    const score = userAnswers.reduce((a, b) => a + b, 0);
     const bestIndex = score % angels.length;
     const bestAngel = angels[bestIndex];
+
     const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
 
     const bestDiv = document.getElementById("best-match");
     bestDiv.innerHTML = `
       <div class="angel-card">
-        <img src="${bestAngel.image}" alt="${bestAngel.name}">
         <h3>${bestAngel.name}</h3>
         <p>${bestAngel.description}</p>
+        <img src="${bestAngel.image}" alt="${bestAngel.name}" style="max-width: 100%; margin-top: 12px;" />
       </div>
     `;
 
@@ -104,22 +79,16 @@ async function showResult() {
       const div = document.createElement("div");
       div.className = "angel-card";
       div.innerHTML = `
-        <img src="${a.image}" alt="${a.name}">
         <h4>${a.name}</h4>
         <p>${a.description}</p>
       `;
       otherDiv.appendChild(div);
     });
 
-  } catch (err) {
+  } catch (error) {
+    console.error("매칭 결과를 불러오지 못했습니다:", error);
     document.getElementById("best-match").innerText = "결과를 불러오는 데 문제가 발생했습니다.";
-    console.error(err);
   }
 }
 
-function restartQuiz() {
-  currentQuestionIndex = 0;
-  userAnswers.fill(null);
-  document.getElementById("result").classList.add("hidden");
-  document.getElementById("start-screen").classList.remove("hidden");
-}
+window.onload = showQuestion;
