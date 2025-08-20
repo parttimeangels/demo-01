@@ -1,22 +1,22 @@
 [
   {
-    "name": "엔젤 A",
-    "description": "당신의 마음을 가장 잘 어루만져 줄 다정한 존재",
+    "name": "Angel 1",
+    "description": "따뜻하고 부드러운 위로를 건네는 엔젤입니다.",
     "image": "angel1.jpg"
   },
   {
-    "name": "엔젤 B",
-    "description": "현실적인 조언과 함께 걸어주는 친구",
+    "name": "Angel 2",
+    "description": "현실적인 조언과 명확한 피드백을 주는 엔젤입니다.",
     "image": "angel2.jpg"
   },
   {
-    "name": "엔젤 C",
-    "description": "말 없이 당신 곁을 지켜줄 이해자",
+    "name": "Angel 3",
+    "description": "침착하게 곁을 지켜주는 묵묵한 엔젤입니다.",
     "image": "angel3.jpg"
   },
   {
-    "name": "엔젤 D",
-    "description": "무기력한 당신에게 새로운 바람을 불어넣는 존재",
+    "name": "Angel 4",
+    "description": "친구처럼 유쾌하게 공감해주는 엔젤입니다.",
     "image": "angel4.jpg"
   }
 ]
