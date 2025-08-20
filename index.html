@@ -3,32 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>파트타임엔젤 심리 테스트</title>
+  <title>파트타임엔젤 테스트</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="container">
 
-    <!-- 퀴즈 시작 화면 -->
+    <!-- 퀴즈 화면 -->
     <div id="quiz">
       <h1>파트타임엔젤 테스트</h1>
-      <div id="question-box">질문이 여기에 표시됩니다.</div>
-      <div id="options"></div>
+      <div id="question-box" class="question-box">질문이 여기에 표시됩니다</div>
+      <div id="options" class="options-box"></div>
     </div>
 
     <!-- 결과 화면 -->
     <div id="result" class="hidden">
       <h2>당신에게 가장 잘 어울리는 엔젤</h2>
-      <div class="angel-featured">
-        <div class="angel-card" id="best-match">
-          <!-- 베스트 매치 엔젤 정보가 JS로 삽입됨 -->
-        </div>
-      </div>
+      <div id="best-match" class="angel-card featured"></div>
 
       <h3>그 외 추천 엔젤</h3>
-      <div class="angel-recommendations" id="other-matches">
-        <!-- 추가 추천 엔젤 카드들 -->
-      </div>
+      <div id="other-matches" class="angel-recommendations"></div>
 
       <button class="call-button" onclick="restartQuiz()">처음으로 돌아가기</button>
     </div>
