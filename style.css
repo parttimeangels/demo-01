@@ -22,26 +22,43 @@ button {
   color: white;
 }
 
-.angel-card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px auto;
+/* Best match - 큰 카드 */
+#best-match .angel-card {
+  border: 2px solid #333;
+  padding: 15px;
+  margin: 20px auto;
   text-align: center;
 }
 
-.angel-card img {
-  width: 100px;
-  height: 100px;
+#best-match img {
+  width: 120px;
+  height: 120px;
   object-fit: cover;
 }
 
-.angel-list {
+/* Other matches - 한 줄에 두 개, 작은 카드 */
+#other-matches {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
+  margin-top: 20px;
+}
+
+#other-matches .angel-card {
+  flex: 1;
+  border: 1px solid #aaa;
+  padding: 10px;
+  font-size: 14px;
+}
+
+#other-matches .angel-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
 
 .nav-buttons {
   margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
 }
