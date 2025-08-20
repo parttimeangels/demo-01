@@ -2,21 +2,21 @@
   {
     "name": "Angel 1",
     "description": "따뜻하고 부드러운 위로를 건네는 엔젤입니다.",
-    "image": "angel1.jpg"
+    "image": "assets/angel1.jpg"
   },
   {
     "name": "Angel 2",
     "description": "현실적인 조언과 명확한 피드백을 주는 엔젤입니다.",
-    "image": "angel2.jpg"
+    "image": "assets/angel2.jpg"
   },
   {
     "name": "Angel 3",
     "description": "침착하게 곁을 지켜주는 묵묵한 엔젤입니다.",
-    "image": "angel3.jpg"
+    "image": "assets/angel3.jpg"
   },
   {
     "name": "Angel 4",
     "description": "친구처럼 유쾌하게 공감해주는 엔젤입니다.",
-    "image": "angel4.jpg"
+    "image": "assets/angel4.jpg"
   }
 ]
