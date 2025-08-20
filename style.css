@@ -1,106 +1,47 @@
-/* 기본 초기화 및 레이아웃 설정 */
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff;
-  color: #333;
-  line-height: 1.6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  font-family: sans-serif;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
 }
 
-.container {
-  max-width: 800px;
-  width: 90%;
-  margin: 0 auto;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-.nav-button {
-  padding: 8px 16px;
-  margin: 12px 6px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.nav-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 .hidden {
   display: none;
 }
 
-h1, h2, h3, h4 {
-  text-align: center;
-  margin-top: 24px;
-  margin-bottom: 16px;
-  color: #222;
-}
-
-/* 질문 섹션 */
-#quiz {
-  text-align: center;
-}
-
-#question-box {
-  font-size: 1.25rem;
-  margin-bottom: 24px;
-  font-weight: 500;
-}
-
-#options {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.option {
-  padding: 12px 20px;
-  font-size: 1rem;
-  background-color: #f0f4f8;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-.option:hover {
-  background-color: #dbeafe;
+.option.selected {
+  background-color: #4caf50;
+  color: white;
 }
 
-/* 결과 섹션 */
-#result {
+.angel-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px auto;
   text-align: center;
-  padding-top: 20px;
 }
 
-/* 가장 잘 어울리는 엔젤 */
-.angel-featured {
-  margin-bottom: 40px;
+.angel-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }
 
-.angel-featured .angel-card {
-  border: 2px solid #60a5fa;
-  background-color: #eff6ff;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-/* 기타 추천 엔젤들 */
-.angel-recommendations {
+.angel-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
   justify-content: center;
+  gap: 10px;
 }
 
-.angel-recommendations .
+.nav-buttons {
+  margin-top: 20px;
+}
