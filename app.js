@@ -56,7 +56,7 @@ async function showResult() {
   document.getElementById("quiz").classList.add("hidden");
   document.getElementById("result").classList.remove("hidden");
 
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbypCCeRa-i4vIRBioEIxqKziSPghABPVxLl8oLc1qoIC0xdTiN6jQUHz-r77_NPXlcU4Q/exec";
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzBovZgNHU5SaC98A6LFe07OGKXjcXkQQ_esIhVq3PRtwbL_gI3QBoqgVVLjPLRg5F2Gw/exec";
 
   try {
     const response = await fetch(WEB_APP_URL, {
