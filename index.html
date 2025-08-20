@@ -3,30 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>파트타임엔젤 테스트</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <title>파트타임엔젤 매칭 테스트</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+  <!-- 시작 화면 -->
+  <div id="start">
+    <h1>당신에게 가장 어울리는 엔젤은?</h1>
+    <button onclick="startQuiz()">테스트 시작하기</button>
+  </div>
 
-    <!-- 퀴즈 화면 -->
-    <div id="quiz">
-      <h1>파트타임엔젤 테스트</h1>
-      <div id="question-box" class="question-box">질문이 여기에 표시됩니다</div>
-      <div id="options" class="options-box"></div>
-    </div>
+  <!-- 질문 화면 -->
+  <div id="quiz" class="hidden">
+    <div id="question-box"></div>
+    <div id="options"></div>
+  </div>
 
-    <!-- 결과 화면 -->
-    <div id="result" class="hidden">
-      <h2>당신에게 가장 잘 어울리는 엔젤</h2>
-      <div id="best-match" class="angel-card featured"></div>
+  <!-- 결과 화면 -->
+  <div id="result" class="hidden">
+    <h2>당신에게 가장 잘 어울리는 엔젤</h2>
+    <div id="best-match"></div>
 
-      <h3>그 외 추천 엔젤</h3>
-      <div id="other-matches" class="angel-recommendations"></div>
+    <h3>그 외 추천 엔젤</h3>
+    <div id="other-matches" class="other-container"></div>
 
-      <button class="call-button" onclick="restartQuiz()">처음으로 돌아가기</button>
-    </div>
-
+    <button onclick="restartQuiz()">처음으로</button>
   </div>
 
   <script src="app.js"></script>
