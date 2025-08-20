@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- 퀴즈 -->
   <div id="quiz" class="container">
     <h1>파트타임엔젤 매칭 테스트</h1>
     <p>5개의 질문에 답하면 당신에게 어울리는 엔젤을 추천해드립니다.</p>
@@ -20,18 +21,20 @@
     </div>
   </div>
 
+  <!-- 결과 -->
   <div id="result" class="container hidden">
     <h2>당신에게 가장 어울리는 엔젤</h2>
     <div id="best-match"></div>
 
     <h3>다른 추천 엔젤</h3>
     <div id="other-matches"></div>
+
+    <div style="text-align:center; margin-top:20px;">
+      <button id="restartBtn">처음부터 다시하기</button>
+    </div>
   </div>
-<!-- 처음부터 다시하기 버튼 -->
-  <div style="text-align:center; margin-top:20px;">
-    <button id="restartBtn">처음부터 다시하기</button>
-  </div>
-</div>
-<script src="./app.js?v=2025-08-20-1"></script>
+
+  <!-- 스크립트: body 닫기 직전 / 캐시버스터 + defer -->
+  <script src="./app.js?v=2025-08-20-02" defer onerror="console.error('app.js 로드 실패 - 경로/파일명 확인')"></script>
 </body>
 </html>
