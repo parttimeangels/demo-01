@@ -2,36 +2,30 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>파트타임엔젤 테스트</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Part-Time Angel Test</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <!-- 시작 화면 -->
-    <div id="start-screen">
-      <h1>파트타임엔젤 테스트</h1>
-      <button id="start-btn">시작하기</button>
+
+    <!-- 퀴즈 박스 -->
+    <div id="quiz">
+      <h2 id="question-box"></h2>
+      <div id="options" class="options-box"></div>
     </div>
 
-    <!-- 퀴즈 화면 -->
-    <div id="quiz" class="hidden">
-      <div id="question-box" class="question-box"></div>
-      <div class="choices" id="options"></div>
-      <div class="nav-buttons">
-        <button id="prev-btn" class="nav-btn">이전</button>
-        <button id="next-btn" class="nav-btn">다음</button>
-      </div>
-    </div>
-
-    <!-- 결과 화면 -->
+    <!-- 결과 박스 -->
     <div id="result" class="hidden">
       <h2>당신에게 가장 잘 어울리는 엔젤</h2>
-      <div id="best-match"></div>
+      <div id="best-match" class="best-match"></div>
+
       <h3>그 외 추천 엔젤</h3>
       <div id="other-matches" class="other-matches"></div>
-      <button id="restart-btn">다시 시작하기</button>
+
+      <button onclick="restartQuiz()" class="restart-button">처음으로 돌아가기</button>
     </div>
+
   </div>
   <script src="app.js"></script>
 </body>
