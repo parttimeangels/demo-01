@@ -74,14 +74,22 @@ function showResult() {
 
   const top = scores[0];
   selectedAngelName = top.name;
-  bestMatch.innerHTML = `<h3>${top.name}</h3><p>${top.desc}</p>`;
+  bestMatch.innerHTML = `<img src="${imgSrc}" alt="${top.name}" style="width:100%; max-width:320px; border-radius:12px; margin-bottom:16px;">
+  <h3>${top.name}</h3>
+  <p>${top.desc}</p>;
 
   scores.slice(1, 3).forEach(a => {
-    const div = document.createElement("div");
-    div.className = "angel-card";
-    div.innerHTML = `<h4>${a.name}</h4><p>매칭률 ${a.score}/3</p><p>${a.desc}</p>`;
-    otherMatches.appendChild(div);
-  });
+  const img = `assets/${a.photo || 'angel1.jpg'}`;
+  const div = document.createElement("div");
+  div.className = "angel-card";
+  div.innerHTML = `
+    <img src="${img}" alt="${a.name}" style="width:100%; max-width:200px; border-radius:10px; margin-bottom:12px;">
+    <h4>${a.name}</h4>
+    <p>매칭률 ${a.score}/3</p>
+    <p>${a.desc}</p>
+  `;
+  otherMatches.appendChild(div);
+});
 
   sendToSheet(top);
 }
