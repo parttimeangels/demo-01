@@ -54,20 +54,26 @@ function showQuestion() {
     optionsBox.appendChild(btn);
   });
 
-  // 이전 버튼
+  const navContainer = document.createElement("div");
+  navContainer.className = "nav-container";
+
   const prevBtn = document.createElement("button");
   prevBtn.innerText = "이전";
   prevBtn.className = "nav-button";
-  prevBtn.disabled = currentQuestionIndex === 0;
   prevBtn.onclick = () => {
     if (currentQuestionIndex > 0) {
       currentQuestionIndex--;
       showQuestion();
+    } else {
+      // 첫 질문이면 시작화면으로
+      document.getElementById("quiz").classList.add("hidden");
+      document.getElementById("start").classList.remove("hidden");
     }
   };
 
+  navContainer.appendChild(prevBtn);
   optionsBox.appendChild(document.createElement("hr"));
-  optionsBox.appendChild(prevBtn);
+  optionsBox.appendChild(navContainer);
 }
 
 async function showResult() {
@@ -81,14 +87,20 @@ async function showResult() {
     const score = userAnswers.reduce((a, b) => a + (b ?? 0), 0);
     const bestIndex = score % angels.length;
     const bestAngel = angels[bestIndex];
-    const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
+
+    // 나머지 추천엔젤 (중복 없이)
+    const others = angels
+      .map((a, i) => ({ ...a, originalIndex: i }))
+      .filter(a => a.originalIndex !== bestIndex)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 2);
 
     const bestDiv = document.getElementById("best-match");
     bestDiv.innerHTML = `
-      <div class="angel-card">
+      <div class="angel-card highlight">
+        <img src="${bestAngel.image}" alt="${bestAngel.name}" />
         <h3>${bestAngel.name}</h3>
         <p>${bestAngel.description}</p>
-        <img src="${bestAngel.image}" alt="${bestAngel.name}" />
       </div>
     `;
 
@@ -98,9 +110,9 @@ async function showResult() {
       const div = document.createElement("div");
       div.className = "angel-card";
       div.innerHTML = `
+        <img src="${a.image}" alt="${a.name}" />
         <h4>${a.name}</h4>
         <p>${a.description}</p>
-        <img src="${a.image}" alt="${a.name}" />
       `;
       otherDiv.appendChild(div);
     });
@@ -111,13 +123,24 @@ async function showResult() {
   }
 }
 
+function startQuiz() {
+  currentQuestionIndex = 0;
+  userAnswers.fill(null);
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  document.getElementById("result").classList.add("hidden");
+  showQuestion();
+}
+
 function restartQuiz() {
   currentQuestionIndex = 0;
   userAnswers.fill(null);
   document.getElementById("result").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-  showQuestion();
+  document.getElementById("start").classList.remove("hidden");
 }
 
-// 시작
-window.onload = showQuestion;
+window.onload = function () {
+  document.getElementById("start").classList.remove("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+};
