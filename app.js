@@ -55,15 +55,12 @@ async function showResult() {
   document.getElementById("result").classList.remove("hidden");
 
   try {
-    const response = await fetch("angels.json"); // JSON이 index.html과 같은 디렉토리에 있어야 함
+    const response = await fetch("angels.json");
     const angels = await response.json();
 
-    // 간단한 매칭 로직: 답변 인덱스의 합계를 엔젤 수로 나눈 나머지로 선택
     const score = userAnswers.reduce((a, b) => a + b, 0);
     const bestIndex = score % angels.length;
     const bestAngel = angels[bestIndex];
-
-    // 나머지 추천 (2명)
     const others = angels.filter((_, i) => i !== bestIndex).slice(0, 2);
 
     const bestDiv = document.getElementById("best-match");
@@ -93,5 +90,4 @@ async function showResult() {
   }
 }
 
-// 초기 시작
 window.onload = showQuestion;
