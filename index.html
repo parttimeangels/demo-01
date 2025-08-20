@@ -3,31 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>파트타임엔젤 매칭 테스트</title>
+  <title>파트타임엔젤 테스트</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 시작 화면 -->
-  <div id="start">
-    <h1>당신에게 가장 어울리는 엔젤은?</h1>
-    <button onclick="startQuiz()">테스트 시작하기</button>
+  <div id="start-screen">
+    <h1>나에게 맞는 엔젤 찾기</h1>
+    <button id="start-btn">시작하기</button>
   </div>
 
-  <!-- 질문 화면 -->
   <div id="quiz" class="hidden">
     <div id="question-box"></div>
     <div id="options"></div>
+    <div class="nav-buttons">
+      <button id="prev-btn">이전</button>
+      <button id="next-btn">다음</button>
+    </div>
   </div>
 
-  <!-- 결과 화면 -->
   <div id="result" class="hidden">
     <h2>당신에게 가장 잘 어울리는 엔젤</h2>
     <div id="best-match"></div>
-
-    <h3>그 외 추천 엔젤</h3>
-    <div id="other-matches" class="other-container"></div>
-
-    <button onclick="restartQuiz()">처음으로</button>
+    <h3>다른 추천 엔젤</h3>
+    <div id="other-matches" class="angel-list"></div>
+    <button onclick="restartQuiz()">다시하기</button>
   </div>
 
   <script src="app.js"></script>
